@@ -7,6 +7,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";      // adjust the path to your firebase config
 import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineSend, AiOutlineDown } from "react-icons/ai";
+import Navbar from "../layout/Navbar";
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
@@ -42,6 +43,7 @@ const UserTable = () => {
             setEditingUserId(null); // Exit edit mode
         }
     };
+
     const getStatusBadge = (status) => {
         const baseStyle = {
             padding: "4px 8px",
@@ -115,9 +117,11 @@ const UserTable = () => {
     }, [reportingUser]);
 
     return (
-        <div className="table-container">
-            <h2 style={{ color: "#99DEFE" }}>All Users (Live)</h2>
-            <div style={{ marginBottom: "16px" }}>
+        <div>
+            <Navbar />
+            <div className="table-container">
+                <h2 style={{ color: "#99DEFE" }}>All Users (Live)</h2>
+                {/* <div style={{ marginBottom: "16px" }}>
                 <button
                     onClick={() => setActiveTab("all")}
                     style={{
@@ -145,160 +149,178 @@ const UserTable = () => {
                 >
                     Completed Users
                 </button>
-            </div>
-            <table className="user-table">
-                <thead>
-                    <tr>
-                        {/* <th>ID</th> */}
-                        <th>Email</th>
-                        {/* <th>Pay-op</th> */}
-                        <th>model_num</th>
-                        <th>serial_num</th>
-                        <th>role</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {(activeTab === "all" ? users : users.filter(user => user.status === "completed")).map((user) => (
-                        <tr key={user.id}>
-                            <td>{user.email || "-"}</td>
-                            <td>{user.modelNumber || "-"}</td>
-                            <td>{user.serialNumber || "-"}</td>
-                            <td>{user.role || "-"}</td>
-                            <td>{user.createdAt?.toDate().toLocaleString() || "-"}</td>
-                            <td>
-                                {updatingUserId === user.id ? (
-                                    <span style={{ fontSize: "1.2em" }}>⏳</span>
-                                ) : editingUserId === user.id ? (
-                                    <select
-                                        value={user.status || ""}
-                                        onChange={(e) =>
-                                            handleStatusChange(user.id, e.target.value)
-                                        }
-                                        onBlur={() => setEditingUserId(null)} // exit edit on blur
-                                        autoFocus
-                                    >
-                                        <option value="">-- Select --</option>
-                                        <option value="pending">pending</option>
-                                        <option value="sent">Sent</option>
-                                        <option value="completed">Completed</option>
-                                    </select>
-                                ) : (
-                                    <div style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "space-between" }}>
-                                        {getStatusBadge(user.status)}
-                                        <button
-                                            onClick={() => setEditingUserId(user.id)}
-                                            style={{
-                                                border: "none",
-                                                background: "transparent",
-                                                cursor: "pointer",
-                                                fontSize: "1.1em",
-                                                padding: 0,
-                                                color: "#FFA3BB",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                            title="Change status"
-                                        >
-                                            <AiOutlineDown />
-                                        </button>
-                                        <button
-                                            onClick={() => setReportingUser(user)}
-                                            style={{
-                                                marginLeft: "6px",
-                                                padding: "4px 8px",
-                                                fontSize: "0.85em",
-                                                borderRadius: "6px",
-                                                border: "1px solid #ccc",
-                                                background: "#fff",
-                                                cursor: "pointer",
-                                                marginLeft: 50,
-                                            }}
-                                        >
-                                            Report
-                                        </button>
-                                    </div>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            {reportingUser && (
-                <div style={{
-                    position: "fixed",
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: "rgba(0,0,0,0.4)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    zIndex: 999
-                }}>
-                    <div style={{
-                        background: "#fff",
-                        padding: "24px",
-                        borderRadius: "10px",
-                        width: "420px",
-                        boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-                        position: "relative"
-                    }}>
-                        <h3 style={{ marginTop: 0 }}>Report User</h3>
-                        <p><strong>Email:</strong> {reportingUser.email}</p>
-                        <p><strong>Status:</strong> {reportingUser.status}</p>
-
-                        <label htmlFor="reportText" style={{ fontWeight: "bold", display: "block", marginTop: "16px" }}>
-                            Message:
-                        </label>
-                        <textarea
-                            id="reportText"
-                            value={reportText}
-                            onChange={(e) => setReportText(e.target.value)}
-                            rows="4"
+            </div> */}
+                <div style={{ marginBottom: "16px" }}>
+                    {["all", "pending", "sent", "completed"].map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab)}
                             style={{
-                                width: "100%",
-                                padding: "8px",
+                                padding: "8px 16px",
+                                background: activeTab === tab ? "#3A6DE8" : "#f0f0f0",
+                                color: activeTab === tab ? "#fff" : "#000",
+                                border: "none",
                                 borderRadius: "6px",
-                                border: "1px solid #ccc",
-                                resize: "vertical",
-                                marginTop: "6px"
+                                marginRight: "8px",
+                                cursor: "pointer"
                             }}
-                            placeholder="Describe the issue here..."
-                        />
+                        >
+                            {tab.charAt(0).toUpperCase() + tab.slice(1)} Users
+                        </button>
+                    ))}
+                </div>
+                <table className="user-table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>model_num</th>
+                            <th>serial_num</th>
+                            <th>role</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {(activeTab === "all" ? users : users.filter(user => user.status === activeTab)).map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.email || "-"}</td>
+                                <td>{user.modelNumber || "-"}</td>
+                                <td>{user.serialNumber || "-"}</td>
+                                <td>{user.role || "-"}</td>
+                                <td>{user.createdAt?.toDate().toLocaleString() || "-"}</td>
+                                <td>
+                                    {updatingUserId === user.id ? (
+                                        <span style={{ fontSize: "1.2em" }}>⏳</span>
+                                    ) : editingUserId === user.id ? (
+                                        <select
+                                            value={user.status || ""}
+                                            onChange={(e) =>
+                                                handleStatusChange(user.id, e.target.value)
+                                            }
+                                            onBlur={() => setEditingUserId(null)} 
+                                            autoFocus
+                                        >
+                                            <option value="">-- Select --</option>
+                                            <option value="pending">pending</option>
+                                            <option value="sent">Sent</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    ) : (
+                                        <div style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "space-between" }}>
+                                            {getStatusBadge(user.status)}
+                                            <button
+                                                onClick={() => setEditingUserId(user.id)}
+                                                style={{
+                                                    border: "none",
+                                                    background: "transparent",
+                                                    cursor: "pointer",
+                                                    fontSize: "1.1em",
+                                                    padding: 0,
+                                                    color: "#FFA3BB",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                                title="Change status"
+                                            >
+                                                <AiOutlineDown />
+                                            </button>
+                                            <button
+                                                onClick={() => setReportingUser(user)}
+                                                style={{
+                                                    marginLeft: "6px",
+                                                    padding: "4px 8px",
+                                                    fontSize: "0.85em",
+                                                    borderRadius: "6px",
+                                                    border: "1px solid #ccc",
+                                                    background: "#fff",
+                                                    cursor: "pointer",
+                                                    marginLeft: 50,
+                                                }}
+                                            >
+                                                Report
+                                            </button>
+                                        </div>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-                        <div style={{ marginTop: "20px", textAlign: "right" }}>
-                            <button
-                                onClick={() => setReportingUser(null)}
+                {reportingUser && (
+                    <div style={{
+                        position: "fixed",
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.4)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 999
+                    }}>
+                        <div style={{
+                            background: "#fff",
+                            padding: "24px",
+                            borderRadius: "10px",
+                            width: "420px",
+                            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+                            position: "relative"
+                        }}>
+                            <h3 style={{ marginTop: 0 }}>Report User</h3>
+                            <p><strong>Email:</strong> {reportingUser.email}</p>
+                            <p><strong>Status:</strong> {reportingUser.status}</p>
+
+                            <label htmlFor="reportText" style={{ fontWeight: "bold", display: "block", marginTop: "16px" }}>
+                                Message:
+                            </label>
+                            <textarea
+                                id="reportText"
+                                value={reportText}
+                                onChange={(e) => setReportText(e.target.value)}
+                                rows="4"
                                 style={{
-                                    padding: "6px 12px",
-                                    marginRight: "8px",
-                                    border: "none",
+                                    width: "100%",
+                                    padding: "8px",
                                     borderRadius: "6px",
-                                    background: "#ccc",
-                                    cursor: "pointer"
+                                    border: "1px solid #ccc",
+                                    resize: "vertical",
+                                    marginTop: "6px"
                                 }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleReportSubmit}
-                                disabled={submittingReport || !reportText.trim()}
-                                style={{
-                                    padding: "6px 12px",
-                                    border: "none",
-                                    borderRadius: "6px",
-                                    background: submittingReport ? "#aaa" : "#1677ff",
-                                    color: "#fff",
-                                    cursor: submittingReport ? "not-allowed" : "pointer"
-                                }}
-                            >
-                                {submittingReport ? "Submitting..." : "Notify user"}
-                            </button>
+                                placeholder="Describe the issue here..."
+                            />
+
+                            <div style={{ marginTop: "20px", textAlign: "right" }}>
+                                <button
+                                    onClick={() => setReportingUser(null)}
+                                    style={{
+                                        padding: "6px 12px",
+                                        marginRight: "8px",
+                                        border: "none",
+                                        borderRadius: "6px",
+                                        background: "#ccc",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleReportSubmit}
+                                    disabled={submittingReport || !reportText.trim()}
+                                    style={{
+                                        padding: "6px 12px",
+                                        border: "none",
+                                        borderRadius: "6px",
+                                        background: submittingReport ? "#aaa" : "#1677ff",
+                                        color: "#fff",
+                                        cursor: submittingReport ? "not-allowed" : "pointer"
+                                    }}
+                                >
+                                    { submittingReport ? "Submitting..." : "Notify user" }
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

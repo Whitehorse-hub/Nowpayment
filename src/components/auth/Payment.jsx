@@ -28,7 +28,6 @@ const Payment = ({ user }) => {
 
     const startPayment = async () => {
         try {
-            // Step 3: Navigate to payment
 
             const result = await npApi.createPayment({
                 price_amount: user.price,
@@ -42,7 +41,6 @@ const Payment = ({ user }) => {
             setPayment(result);
             console.log(result)
 
-            // Step 2: Save additional info in Firestore
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 user.email,
@@ -65,7 +63,7 @@ const Payment = ({ user }) => {
             console.error('Payment failed:', error);
         }
     };
-    
+
     const Login = async () => {
         console.log("asdf")
         navigate("/login")
@@ -90,9 +88,6 @@ const Payment = ({ user }) => {
                 <p style={{ fontSize: "16px", color: "#333" }}>
                     Send {payment.price_amount} {payment.pay_currency} to:
                 </p>
-
-                {/* Send <strong>{payment.pay_amount} {payment.pay_currency.toUpperCase()}</strong> to:
-         */}
                 <p style={{
                     fontSize: "14px",
                     wordBreak: "break-all",
@@ -122,9 +117,7 @@ const Payment = ({ user }) => {
                 <p style={{ marginTop: "20px", fontSize: "13px", color: "#666" }}>
                     Scan the QR code with your wallet or copy the address above.
                 </p>
-                {/* Login Button */}
                 <button
-                    // disabled={!selected}
                     onClick={Login}
                     style={{
                         width: "150px",
@@ -175,13 +168,14 @@ const Payment = ({ user }) => {
                 onBlur={(e) => e.target.style.border = "1px solid #ccc"}
             >
                 <option value="" disabled>Choose crypto</option>
-                {cryptoList.map(c => (
-                    <option key={c} value={c}>{c.toUpperCase()}</option>
-                ))}
+                {cryptoList
+                    .filter(c => ['usdttrc20', 'eth', 'btc', 'xrp'].includes(c.toLowerCase()))
+                    .map(c => (
+                        <option key={c} value={c}>{c.toUpperCase()}</option>
+                    ))}
             </select>
 
             <button
-                // disabled={!selected}
                 onClick={startPayment}
                 style={{
                     width: "250px",
@@ -197,7 +191,6 @@ const Payment = ({ user }) => {
             >
                 Pay {user?.price} USD →
             </button>
-            {/* Go to UserDashboard */}
         </div>
     )
 }

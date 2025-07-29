@@ -216,12 +216,13 @@ img {
 /* User table property */
 .table-container {
   padding: 24px;
-  max-width: 1100px;
+  max-width: 1900px;
   margin: 0 auto;
   background-color: #242B35;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
+  margin-top: 30px;
 }
 
 .modern-table {
@@ -259,7 +260,7 @@ img {
 }
 
 .modern-table tbody tr:hover {
-  background-color: #E3F2FD;
+  background-color: #0b63a1;
   cursor: pointer;
 }
 
@@ -571,11 +572,16 @@ h2 {
 }
 
 .user-table tr:hover {
-  background-color: #f2f2f2;
+  background-color: orange;
 }
 
-.user-table td {
+ .user-table td {
   color: #99DEFE;
+}
+
+.admin-panel-title {
+  font-size: 50px;
+  color: #0CC2FF;
 }
 
 /* ✅ Responsive behavior below 1590px */

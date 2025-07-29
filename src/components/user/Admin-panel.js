@@ -45,7 +45,7 @@ const Adpanel = () => {
         navigate('/admin/table')
     }
     const Report = () => {
-        navigate('/admin/report')
+        navigate('')
     }
     const logoutUser = async () => {
         try {
@@ -65,7 +65,7 @@ const Adpanel = () => {
                 backgroundColor: "#99DEFE",
                 paddingRight: 20,
                 paddingLeft: 20,
-                marginRight: 300,
+                // marginRight: 300,
                 height: "100vh"
             }}>
                 <div>
@@ -86,7 +86,7 @@ const Adpanel = () => {
                         Table of all checks
                     </button>
                 </div>
-                <div>
+                {/* <div>
                     <button style={{
                         backgroundColor: "#242B35",
                         color: "white",
@@ -106,8 +106,8 @@ const Adpanel = () => {
                             color: "#0CC2FF"
                         }} />
                     </button>
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                     <button style={{
                         backgroundColor: "#242B35",
                         color: "#0CC2FF",
@@ -124,7 +124,7 @@ const Adpanel = () => {
                     >
                         <span>Report Edit</span>
                     </button>
-                </div>
+                </div> */}
                 <div>
                     <button style={{
                         backgroundColor: "#242B35",
@@ -144,7 +144,7 @@ const Adpanel = () => {
                     </button>
                 </div>
             </div>
-            <HTMLFlipBook
+            {/* <HTMLFlipBook
                 width={340}
                 height={400}
                 size="fixed"
@@ -166,7 +166,22 @@ const Adpanel = () => {
                         />
                     </div>
                 ))}
-            </HTMLFlipBook>
+            </HTMLFlipBook> */}
+            <div style={{
+                maxWidth: 1720,
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "#EAF5FF",
+            }}>
+                <div style={{
+                    marginTop: 200,
+                    marginLeft: 300,
+                }}>
+                    <h1 className='admin-panel-title'>
+                        Here, you can check the user's payment check.
+                    </h1>
+                </div>
+            </div>
         </div>
     );
 };
